@@ -1,0 +1,60 @@
+- id: lab-0-terminal
+  title: Разминка в терминале Kali
+  category: Linux Labs
+  module: 0
+  lesson: "0.3"
+  objective: Освоить базовую навигацию и создание файлов в терминале Kali.
+  environment:
+    - Kali Linux в VirtualBox
+  prerequisites:
+    - Урок 0.3 пройден.
+  tasks:
+    - id: lab-0-term-1
+      title: Дерево папок
+      input: false
+      prompt: |
+        Создай в домашней папке структуру `cyber-course/{module-0,module-1,notes}`
+        одной командой и покажи дерево через `ls -R`.
+      hints:
+        - '`mkdir -p cyber-course/{module-0,module-1,notes}`'
+    - id: lab-0-term-2
+      title: Файл заметок
+      input: false
+      prompt: |
+        В `module-0` создай `commands.md`, запиши туда 5 команд из урока с описанием,
+        выведи файл через `cat`.
+  expectedOutput: |
+    Дерево из трёх папок и файл `commands.md` с пятью командами. Всё внутри `~/cyber-course`.
+  safety:
+    - Все действия только в своей Kali VM.
+
+- id: lab-0-connectivity
+  title: Проверка изоляции стенда
+  category: Networking Labs
+  module: 0
+  lesson: "0.4"
+  objective: Убедиться, что цель доступна из Kali и при этом изолирована от интернета.
+  environment:
+    - Kali (host-only + NAT)
+    - Metasploitable 2 (host-only)
+  prerequisites:
+    - Урок 0.4 пройден, обе VM запущены.
+  tasks:
+    - id: lab-0-conn-1
+      title: Связь с целью
+      input: false
+      prompt: |
+        С Kali выполни `ping -c 3 <IP_цели>` и добейся `0% packet loss`.
+    - id: lab-0-conn-2
+      title: Проверка изоляции
+      input: false
+      prompt: |
+        С Metasploitable выполни `ping -c 2 8.8.8.8`. Пакеты НЕ должны доходить —
+        это подтверждает изоляцию от интернета.
+      hints:
+        - Если цель достучалась до 8.8.8.8 — у неё лишний NAT/bridged адаптер, убери его.
+  expectedOutput: |
+    Kali пингует цель (0% loss); цель не пингует интернет. Изоляция подтверждена.
+  safety:
+    - Уязвимую цель держать только в host-only сети.
+    - Никаких сканов и пингов вне своей лаборатории.

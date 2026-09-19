@@ -1,0 +1,193 @@
+@import 'tailwindcss';
+
+/*
+ * Design tokens. Dark-first, calm slate surfaces; amber is reserved for
+ * "what to do next" (primary actions, current position, progress).
+ */
+@theme {
+  --font-sans: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'Cascadia Code', Consolas, monospace;
+
+  --color-ink: #141b26;
+  --color-panel: #1a2330;
+  --color-raised: #212c3b;
+  --color-line: #2d3a4c;
+  --color-line-strong: #3d4d63;
+  --color-fg: #dce3ec;
+  --color-muted: #8e9bae;
+  --color-faint: #66748a;
+  --color-amber: #e8b04b;
+  --color-amber-deep: #b9862c;
+  --color-sky: #6fa8e6;
+  --color-mint: #62be8f;
+  --color-rose: #e4716a;
+  --color-term: #0f141c;
+}
+
+html {
+  background: var(--color-ink);
+  color: var(--color-fg);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--color-ink);
+}
+
+::selection {
+  background: rgb(232 176 75 / 0.35);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-amber);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+}
+
+/* Scrollbars */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-line-strong) transparent;
+}
+
+/* ---------- Markdown reading styles ---------- */
+.md {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--color-fg);
+}
+.md > * + * {
+  margin-top: 0.9em;
+}
+.md h3 {
+  font-size: 1.12rem;
+  font-weight: 600;
+  margin-top: 1.8em;
+  color: #eef2f7;
+}
+.md h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-top: 1.4em;
+  color: #eef2f7;
+}
+.md p,
+.md li {
+  max-width: 76ch;
+}
+.md a {
+  color: var(--color-sky);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+}
+.md a:hover {
+  color: #9cc3ef;
+}
+.md strong {
+  color: #f3f6fa;
+  font-weight: 600;
+}
+.md ul {
+  list-style: disc;
+  padding-left: 1.3rem;
+}
+.md ol {
+  list-style: decimal;
+  padding-left: 1.4rem;
+}
+.md li + li {
+  margin-top: 0.3em;
+}
+.md li::marker {
+  color: var(--color-faint);
+}
+.md blockquote {
+  border-left: 3px solid var(--color-amber);
+  padding: 0.2rem 0 0.2rem 1rem;
+  color: #c9d2de;
+}
+.md hr {
+  border: 0;
+  border-top: 1px solid var(--color-line);
+  margin: 1.6em 0;
+}
+.md :not(pre) > code {
+  font-family: var(--font-mono);
+  font-size: 0.88em;
+  background: var(--color-raised);
+  border: 1px solid var(--color-line);
+  border-radius: 4px;
+  padding: 0.08em 0.35em;
+  color: #f0d49a;
+}
+.md table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.93rem;
+}
+.md th {
+  text-align: left;
+  font-weight: 600;
+  color: var(--color-muted);
+  border-bottom: 1px solid var(--color-line-strong);
+  padding: 0.5rem 0.75rem;
+  white-space: nowrap;
+}
+.md td {
+  border-bottom: 1px solid var(--color-line);
+  padding: 0.55rem 0.75rem;
+  vertical-align: top;
+}
+.md tr:last-child td {
+  border-bottom: 0;
+}
+
+/* ---------- Syntax highlighting (highlight.js classes) ---------- */
+.hljs-keyword,
+.hljs-built_in,
+.hljs-selector-tag {
+  color: #c89bf0;
+}
+.hljs-string,
+.hljs-attr,
+.hljs-template-string {
+  color: #9fd08a;
+}
+.hljs-number,
+.hljs-literal {
+  color: #f0b27a;
+}
+.hljs-comment {
+  color: #6f7e93;
+  font-style: italic;
+}
+.hljs-title,
+.hljs-title.function_ {
+  color: #7fb8f0;
+}
+.hljs-variable,
+.hljs-params {
+  color: #e6cf8f;
+}
+.hljs-meta {
+  color: #8ab4c8;
+}

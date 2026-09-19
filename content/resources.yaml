@@ -1,0 +1,58 @@
+- category: Основы и карьера
+  items:
+    - title: roadmap.sh — Cyber Security
+      url: https://roadmap.sh/cyber-security
+      note: Визуальная карта пути в кибербезопасности от новичка до специалиста.
+      lang: EN
+    - title: BSI — Bundesamt für Sicherheit in der Informationstechnik
+      url: https://www.bsi.bund.de
+      note: Немецкое федеральное ведомство по ИБ; рекомендации и стандарты.
+      lang: DE
+
+- category: Право (Германия)
+  items:
+    - title: StGB §202a — Ausspähen von Daten
+      url: https://www.gesetze-im-internet.de/stgb/__202a.html
+      note: Первоисточник по несанкционированному доступу к данным.
+      lang: DE
+    - title: StGB §202c — Vorbereiten des Ausspähens
+      url: https://www.gesetze-im-internet.de/stgb/__202c.html
+      note: Про подготовку и «хакерские инструменты».
+      lang: DE
+
+- category: Linux и терминал
+  items:
+    - title: Linux Journey
+      url: https://linuxjourney.com/
+      note: Пошаговый интерактивный курс по Linux с нуля.
+      lang: EN
+    - title: Kali Linux Documentation
+      url: https://www.kali.org/docs/
+      note: "Официальная документация Kali: установка, инструменты, настройка."
+      lang: EN
+
+- category: Практика и тренировка
+  items:
+    - title: TryHackMe
+      url: https://tryhackme.com/
+      note: Управляемые комнаты для начинающих; легальная тренировка в браузере.
+      lang: EN
+    - title: Hack The Box
+      url: https://www.hackthebox.com/
+      note: Учебные машины и лаборатории; разрешение в рамках правил платформы.
+      lang: EN
+    - title: OWASP Juice Shop
+      url: https://owasp.org/www-project-juice-shop/
+      note: Намеренно уязвимое веб-приложение для практики web security.
+      lang: EN
+
+- category: Web Security
+  items:
+    - title: OWASP Top 10
+      url: https://owasp.org/www-project-top-ten/
+      note: Десять самых критичных рисков веб-приложений — обязательная база.
+      lang: EN
+    - title: PortSwigger Web Security Academy
+      url: https://portswigger.net/web-security
+      note: Бесплатный подробный курс по веб-уязвимостям с лабораториями.
+      lang: EN

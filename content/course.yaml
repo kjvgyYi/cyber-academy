@@ -1,0 +1,86 @@
+title: Python + Kali Linux для Cybersecurity
+subtitle: Личная академия кибербезопасности — с нуля до практики
+
+phases:
+  - number: 1
+    title: Фундамент
+  - number: 2
+    title: Инструменты и атаки
+  - number: 3
+    title: Автоматизация на Python
+  - number: 4
+    title: Специализация и практика
+
+modules:
+  - number: 0
+    title: Ориентация и лаборатория
+    summary: Что такое cybersecurity, границы закона в Германии, безопасный учебный стенд.
+    phase: 1
+  - number: 1
+    title: Основы информационной безопасности
+    summary: CIA, модели угроз, типы атак, роли и жизненный цикл инцидента.
+    phase: 1
+  - number: 2
+    title: Linux Fundamentals
+    summary: Файловая система, пользователи, права, процессы, пакеты — база для всего.
+    phase: 1
+  - number: 3
+    title: Сети для безопасности
+    summary: TCP/IP, порты, DNS, HTTP, модель OSI глазами защитника и атакующего.
+    phase: 1
+  - number: 4
+    title: Bash и командная строка
+    summary: Пайпы, grep/sed/awk, скрипты — быстрый анализ и автоматизация в терминале.
+    phase: 1
+  - number: 5
+    title: Python с нуля
+    summary: Синтаксис, типы, структуры данных, функции, файлы, обработка ошибок.
+    phase: 2
+  - number: 6
+    title: Kali Linux и инструменты
+    summary: Обзор Kali, ключевые инструменты, безопасная работа на стенде.
+    phase: 2
+  - number: 7
+    title: Разведка и сканирование
+    summary: OSINT, Nmap, обнаружение сервисов, снятие баннеров в лаборатории.
+    phase: 2
+  - number: 8
+    title: Анализ трафика
+    summary: Wireshark и tcpdump, разбор пакетов, обнаружение аномалий.
+    phase: 2
+  - number: 9
+    title: Web Security основы
+    summary: HTTP-запросы, OWASP Top 10, Burp Suite, уязвимости на Juice Shop.
+    phase: 2
+  - number: 10
+    title: Пароли и хеши
+    summary: Хеширование, John the Ripper, Hashcat, политики паролей — только свои хеши.
+    phase: 2
+  - number: 11
+    title: Python для автоматизации безопасности
+    summary: requests, сокеты, парсинг, работа с API, свои утилиты.
+    phase: 3
+  - number: 12
+    title: Анализ логов на Python
+    summary: Парсинг auth.log, поиск атак, отчёты и уведомления.
+    phase: 3
+  - number: 13
+    title: Скрипты для разведки
+    summary: Свой сканер портов, сбор баннеров, автоматизация OSINT.
+    phase: 3
+  - number: 14
+    title: Defensive Security и мониторинг
+    summary: Обнаружение, файловый мониторинг, базовая логика SIEM.
+    phase: 3
+  - number: 15
+    title: Криптография на практике
+    summary: Симметрия/асимметрия, хеши, TLS, библиотека cryptography.
+    phase: 4
+  - number: 16
+    title: Основы пентеста
+    summary: Методология, Metasploit на стенде, отчётность, этика.
+    phase: 4
+  - number: 17
+    title: Capstone и портфолио
+    summary: Итоговый проект, GitHub-портфолио, план дальнейшего роста.
+    phase: 4

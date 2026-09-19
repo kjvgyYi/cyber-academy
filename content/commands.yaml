@@ -1,0 +1,133 @@
+- name: pwd
+  category: Linux
+  purpose: Показать текущую рабочую папку.
+  syntax: pwd
+  examples:
+    - cmd: pwd
+      note: Выводит абсолютный путь, например /home/kali.
+  security: Ориентация в системе — первый шаг при разборе скомпрометированной машины.
+  lessons: ["0.3"]
+
+- name: ls
+  category: Linux
+  purpose: Показать содержимое папки.
+  syntax: ls [опции] [путь]
+  examples:
+    - cmd: ls -la
+      note: Подробный список со скрытыми файлами и правами.
+    - cmd: ls -R
+      note: Рекурсивно по всем вложенным папкам.
+  security: '`ls -la` показывает права и владельцев — важно при поиске подозрительных файлов.'
+  lessons: ["0.3"]
+
+- name: cd
+  category: Linux
+  purpose: Перейти в другую папку.
+  syntax: cd [путь]
+  examples:
+    - cmd: cd ~
+      note: В домашнюю папку.
+    - cmd: cd ..
+      note: На уровень вверх.
+    - cmd: cd -
+      note: В предыдущую папку.
+  security: ""
+  lessons: ["0.3"]
+
+- name: mkdir
+  category: Linux
+  purpose: Создать папку.
+  syntax: mkdir [-p] имя
+  examples:
+    - cmd: mkdir -p cyber-course/module-0
+      note: '-p создаёт вложенные папки за один раз.'
+  security: ""
+  lessons: ["0.3"]
+
+- name: cat
+  category: Linux
+  purpose: Вывести содержимое файла.
+  syntax: cat файл
+  examples:
+    - cmd: cat /etc/passwd
+      note: Список учётных записей системы (в учебных целях, на своей машине).
+  security: '`/etc/passwd` показывает пользователей — типовой шаг разведки на скомпрометированной системе.'
+  lessons: ["0.3"]
+
+- name: apt
+  category: Linux
+  purpose: Пакетный менеджер Debian/Kali — установка и обновление ПО.
+  syntax: sudo apt [update|upgrade|install] [пакет]
+  examples:
+    - cmd: sudo apt update && sudo apt upgrade -y
+      note: Обновить списки и сами пакеты.
+    - cmd: sudo apt install -y git docker.io
+      note: Установить несколько пакетов сразу.
+  security: Держать инструменты в актуальном состоянии — часть базовой гигиены.
+  lessons: ["0.3", "0.5", "0.6"]
+
+- name: ping
+  category: Networking
+  purpose: Проверить сетевую доступность узла (ICMP-эхо).
+  syntax: ping [-c N] host
+  examples:
+    - cmd: ping -c 3 192.168.56.102
+      note: Три пакета до цели в host-only сети.
+  security: Быстрая проверка связи и изоляции стенда; в разведке — обнаружение живых узлов.
+  lessons: ["0.4"]
+
+- name: ip
+  category: Networking
+  purpose: Показать и настроить сетевые интерфейсы и адреса.
+  syntax: ip a
+  examples:
+    - cmd: ip a
+      note: Список интерфейсов и их IP-адресов.
+  security: Понять, в каких сетях находится машина — база сетевой разведки.
+  lessons: ["0.3", "0.4"]
+
+- name: systemd-detect-virt
+  category: Linux
+  purpose: Определить, работает ли система в виртуализации, и в какой.
+  syntax: systemd-detect-virt
+  examples:
+    - cmd: systemd-detect-virt
+      note: '«oracle» = VirtualBox; «none» = физическая машина.'
+  security: Подтверждение изоляции учебной среды.
+  lessons: ["0.2"]
+
+- name: docker
+  category: Security Tools
+  purpose: Управление контейнерами — быстрый запуск изолированных приложений.
+  syntax: docker run [опции] образ
+  examples:
+    - cmd: sudo docker run --rm -p 127.0.0.1:3000:3000 bkimminich/juice-shop
+      note: Запуск веб-цели только на localhost.
+    - cmd: sudo docker ps
+      note: Список запущенных контейнеров.
+  security: Разворачивание уязвимых целей в изоляции для легальной практики.
+  lessons: ["0.5"]
+
+- name: git
+  category: Git
+  purpose: Контроль версий — история изменений файлов и код.
+  syntax: git [init|add|commit|push] ...
+  examples:
+    - cmd: git init
+      note: Инициализировать репозиторий.
+    - cmd: git commit -m "сообщение"
+      note: Зафиксировать изменения.
+    - cmd: git push -u origin main
+      note: Отправить на GitHub.
+  security: Ведение заметок, скриптов и портфолио; версионирование инструментов.
+  lessons: ["0.6"]
+
+- name: sudo
+  category: Linux
+  purpose: Выполнить команду с правами суперпользователя.
+  syntax: sudo команда
+  examples:
+    - cmd: sudo apt update
+      note: Обновление пакетов требует прав root.
+  security: Понимание привилегий критично; эскалация прав — ключевая тема атак и защиты.
+  lessons: ["0.3", "0.5"]

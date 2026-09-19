@@ -1,0 +1,108 @@
+- name: Nmap
+  category: Recon
+  phase: Reconnaissance
+  purpose: Сканер сети и портов — обнаружение узлов, открытых портов и сервисов.
+  usage: nmap [опции] цель
+  safeLab: Сканируй только свою Metasploitable в host-only сети.
+  example: |
+    $ nmap -sV 192.168.56.102
+    PORT     STATE SERVICE VERSION
+    21/tcp   open  ftp     vsftpd 2.3.4
+    22/tcp   open  ssh     OpenSSH 4.7p1
+    80/tcp   open  http    Apache 2.2.8
+  output: Каждая строка — открытый порт, сервис и его версия. Старые версии часто содержат известные уязвимости.
+  lessons: []
+  modules: [7]
+
+- name: Wireshark
+  category: Traffic Analysis
+  phase: Analysis
+  purpose: Графический анализатор сетевого трафика — захват и разбор пакетов.
+  usage: wireshark (GUI) или tshark (CLI)
+  safeLab: Анализируй трафик своей машины или host-only сети.
+  example: |
+    $ tshark -i eth0 -c 5
+    1 0.000000 192.168.56.101 -> 192.168.56.102 TCP 74 5000 -> 80 [SYN]
+  output: Видно источник, назначение, протокол и флаги. По TCP-флагам читаются рукопожатия и сканирования.
+  lessons: []
+  modules: [8]
+
+- name: tcpdump
+  category: Traffic Analysis
+  phase: Analysis
+  purpose: Консольный захват пакетов — лёгкая альтернатива Wireshark на серверах.
+  usage: sudo tcpdump -i интерфейс [фильтр]
+  safeLab: Только на своих интерфейсах и в своей сети.
+  example: |
+    $ sudo tcpdump -i eth0 port 80 -c 3
+    listening on eth0 ...
+  output: Каждая строка — пакет с временем, адресами и портами. Фильтры сужают вывод до нужного трафика.
+  lessons: []
+  modules: [8]
+
+- name: Burp Suite
+  category: Web Security
+  phase: Analysis
+  purpose: Прокси для перехвата и модификации HTTP-запросов веб-приложений.
+  usage: Настроить браузер на прокси Burp, перехватывать запросы.
+  safeLab: Только против OWASP Juice Shop на localhost или разрешённых целей.
+  example: |
+    $ # запросы проходят через Burp (127.0.0.1:8080),
+    $ # где их можно просмотреть и изменить
+  output: Перехваченные запросы/ответы видны целиком; можно менять параметры и наблюдать реакцию приложения.
+  lessons: []
+  modules: [9]
+
+- name: ffuf
+  category: Web Security
+  phase: Reconnaissance
+  purpose: Быстрый веб-фаззер — поиск скрытых путей и параметров по словарю.
+  usage: ffuf -u http://цель/FUZZ -w словарь.txt
+  safeLab: Только против своих учебных веб-целей на localhost.
+  example: |
+    $ ffuf -u http://127.0.0.1:3000/FUZZ -w wordlist.txt
+    admin      [Status: 200]
+    ftp        [Status: 301]
+  output: Найденные пути с кодом ответа. 200/301/403 подсказывают, что ресурс существует.
+  lessons: []
+  modules: [9]
+
+- name: John the Ripper
+  category: Password Cracking
+  phase: Post-Exploitation
+  purpose: Восстановление паролей по хешам перебором и по словарю.
+  usage: john [опции] файл-с-хешами
+  safeLab: Только свои собственные хеши, созданные для тренировки.
+  example: |
+    $ john --wordlist=rockyou.txt hashes.txt
+    password123      (user1)
+  output: Показывает восстановленные пары пароль/пользователь. Демонстрирует слабость простых паролей.
+  lessons: []
+  modules: [10]
+
+- name: Hashcat
+  category: Password Cracking
+  phase: Post-Exploitation
+  purpose: Высокоскоростное восстановление хешей с ускорением на GPU.
+  usage: hashcat -m тип -a атака хеши словарь
+  safeLab: Только свои хеши; на твоей RTX 4060 работает быстро.
+  example: |
+    $ hashcat -m 0 -a 0 hashes.txt rockyou.txt
+    5f4dcc3b5aa765d61d8327deb882cf99:password
+  output: Пары хеш:пароль. Тип (-m) должен совпадать с алгоритмом хеша (0 = MD5).
+  lessons: []
+  modules: [10]
+
+- name: Metasploit
+  category: Exploitation
+  phase: Exploitation
+  purpose: Фреймворк для эксплуатации известных уязвимостей на стенде.
+  usage: msfconsole → search/use/set/exploit
+  safeLab: Только против Metasploitable и разрешённых учебных целей.
+  example: |
+    $ msfconsole -q
+    msf6 > search vsftpd
+    msf6 > use exploit/unix/ftp/vsftpd_234_backdoor
+  output: Модули под конкретные уязвимости; при успехе даёт сессию на цели. Учит связке «уязвимость → эксплойт».
+  lessons: []
+  modules: [16]
