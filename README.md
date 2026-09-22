@@ -6,6 +6,8 @@
 
 [![Deploy](https://github.com/kjvgyYi/cyber-academy/actions/workflows/deploy.yml/badge.svg)](https://github.com/kjvgyYi/cyber-academy/actions/workflows/deploy.yml)
 
+![Cybersecurity Academy — Dashboard](docs/screenshot.png)
+
 ---
 
 ## О проекте
