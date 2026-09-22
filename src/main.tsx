@@ -10,13 +10,12 @@ import { supabase } from '@/lib/supabase';
 import { ProgressProvider } from '@/lib/progress';
 import { App } from './App';
 
-// HashRouter + Supabase OAuth: Supabase appends ?code=... before the hash.
-// Exchange the code for a session, then strip the query string so the router
-// renders the correct route instead of falling through to #/404.
-const searchParams = new URLSearchParams(window.location.search);
-if (searchParams.get('code')) {
-  supabase.auth.exchangeCodeForSession(window.location.search).finally(() => {
-    window.history.replaceState(null, '', window.location.pathname + window.location.hash);
+// Implicit OAuth flow: tokens arrive in the URL hash (#access_token=...).
+// Supabase SDK reads them automatically on init; we just strip the token
+// params from the hash so HashRouter renders the correct route.
+if (window.location.hash.includes('access_token=')) {
+  supabase.auth.getSession().finally(() => {
+    window.history.replaceState(null, '', window.location.pathname + '#/');
   });
 }
 
