@@ -1,0 +1,49 @@
+id: quiz-1-1
+title: Триада CIA
+lesson: "1.1"
+module: 1
+questions:
+  - q: Банковский сервер стал недоступен из-за DDoS-атаки. Какое свойство CIA нарушено?
+    options:
+      - Confidentiality
+      - Integrity
+      - Availability
+      - Все три одновременно
+    answer: 2
+    explanation: DDoS лишает законных пользователей доступа к системе — нарушение Availability. Данные не прочитаны и не изменены.
+
+  - q: Атакующий перехватил трафик между пользователем и сайтом и прочитал токен сессии. Какое свойство CIA нарушено?
+    options:
+      - Availability
+      - Integrity
+      - Confidentiality
+      - Ни одно — токен не является данными
+    answer: 2
+    explanation: Посторонний прочитал данные, которые должны были остаться приватными. Это нарушение Confidentiality.
+
+  - q: Разработчик случайно изменил запись в базе данных — цена товара стала отрицательной. Какое свойство CIA пострадало?
+    options:
+      - Confidentiality
+      - Integrity
+      - Availability
+      - AAA
+    answer: 1
+    explanation: Данные изменились (пусть и случайно) — это нарушение Integrity. Данные больше не отражают реальное состояние.
+
+  - q: Компания шифрует все данные одним мастер-ключом, который хранит только один сотрудник. Что это нарушает при болезни сотрудника?
+    options:
+      - Confidentiality
+      - Integrity
+      - Availability
+      - Ничего — шифрование всегда хорошо
+    answer: 2
+    explanation: Если ключ недоступен, данные невозможно расшифровать — Availability падает. Это классический пример конфликта CIA.
+
+  - q: Ransomware зашифровал файлы и атакующий заявил, что скопировал их перед шифрованием. Какие свойства CIA нарушены?
+    options:
+      - Только Availability
+      - Только Confidentiality
+      - Confidentiality и Availability
+      - Integrity и Availability
+    answer: 2
+    explanation: "Файлы недоступны (Availability). Атакующий скопировал данные (Confidentiality). Double extortion: нарушены оба свойства."
