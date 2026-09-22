@@ -2,13 +2,17 @@ import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL as string;
 const supabaseKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY as string;
+const googleClientId = import.meta.env.VITE_SUPABASE_GOOGLE_CLIENT_ID as string | undefined;
 
 export const supabase = createClient(supabaseUrl, supabaseKey);
 
 export async function signInWithGoogle() {
   return supabase.auth.signInWithOAuth({
     provider: 'google',
-    options: { redirectTo: window.location.origin + window.location.pathname },
+    options: {
+      redirectTo: window.location.origin + window.location.pathname,
+      ...(googleClientId ? { queryParams: { client_id: googleClientId } } : {}),
+    },
   });
 }
 
