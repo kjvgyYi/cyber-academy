@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
+import { AuthButton } from './AuthButton';
 import {
   Beaker,
   BookOpen,
@@ -202,6 +203,10 @@ export function Sidebar({ onSearch, onNavigate }: { onSearch: () => void; onNavi
           <GraduationCap size={16} /> Прогресс и настройки
         </NavLink>
       </nav>
+
+      <div className="border-t border-line px-4 py-3" onClick={(e) => e.stopPropagation()}>
+        <AuthButton />
+      </div>
     </div>
   );
 }

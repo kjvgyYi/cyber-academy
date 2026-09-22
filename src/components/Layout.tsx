@@ -3,6 +3,7 @@ import { Outlet, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import { Sidebar } from './Sidebar';
 import { SearchPalette } from './SearchPalette';
+import { AuthButton } from './AuthButton';
 import { cx } from './ui';
 
 export function Layout() {
@@ -49,7 +50,8 @@ export function Layout() {
         <button type="button" onClick={() => setMobileOpen(true)} aria-label="Открыть меню" className="text-muted hover:text-fg">
           <Menu size={22} />
         </button>
-        <span className="text-sm font-semibold">Cybersecurity Academy</span>
+        <span className="flex-1 text-sm font-semibold">Cybersecurity Academy</span>
+        <AuthButton />
       </header>
 
       {/* Mobile drawer */}

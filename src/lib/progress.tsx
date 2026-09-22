@@ -1,5 +1,7 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
+import { supabase } from './supabase';
+import { fetchCloudProgress, uploadProgress, mergeProgress, LOCAL_UPDATED_KEY } from './syncProgress';
 
 export type ItemStatus = 'in_progress' | 'completed';
 
@@ -124,12 +126,22 @@ function setOrDelete<T>(map: Record<string, T>, key: string, value: T | null): R
 
 export function ProgressProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<ProgressState>(load);
+  const userIdRef = useRef<string | null>(null);
+  const syncTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  // Persist to localStorage.
   useEffect(() => {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      localStorage.setItem(LOCAL_UPDATED_KEY, new Date().toISOString());
     } catch {
-      /* storage full or disabled: progress stays in memory for this session */
+      /* storage full or disabled */
+    }
+    // Debounced upload to Supabase (1 s).
+    if (userIdRef.current) {
+      if (syncTimerRef.current) clearTimeout(syncTimerRef.current);
+      const uid = userIdRef.current;
+      syncTimerRef.current = setTimeout(() => void uploadProgress(uid, state), 1000);
     }
   }, [state]);
 
@@ -146,6 +158,26 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
     };
     window.addEventListener('storage', onStorage);
     return () => window.removeEventListener('storage', onStorage);
+  }, []);
+
+  // Auth state: on login fetch cloud and merge; on logout stop syncing.
+  useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
+      if (session?.user) {
+        userIdRef.current = session.user.id;
+        const cloud = await fetchCloudProgress(session.user.id);
+        if (cloud) {
+          setState((local) => sanitize(mergeProgress(local, cloud)));
+        } else {
+          // First login: upload local progress to cloud.
+          void uploadProgress(session.user.id, state);
+        }
+      } else {
+        userIdRef.current = null;
+      }
+    });
+    return () => subscription.unsubscribe();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const update = useCallback((fn: (s: ProgressState) => ProgressState, activity = true) => {
