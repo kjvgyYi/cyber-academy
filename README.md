@@ -1,85 +1,80 @@
 # Cybersecurity Academy
 
-Локальный интерактивный учебный сайт для самостоятельного курса **«Python + Kali Linux для Cybersecurity»**. Работает полностью в браузере, прогресс хранится локально (localStorage). Контент (уроки, квизы, задачи) отделён от кода приложения: чтобы добавить материал, достаточно положить Markdown/YAML-файл в папку `content/` — код менять не нужно.
+> Интерактивный самоучитель **«Python + Kali Linux для Cybersecurity»** — запускается прямо в браузере, прогресс хранится локально.
 
-Сейчас доступен **Модуль 0** (ориентация и сборка лаборатории). Остальные 17 модулей уже есть в структуре и открываются по мере добавления контента.
+**[Открыть сайт →](https://kjvgyyi.github.io/cyber-academy/)**
+
+[![Deploy](https://github.com/kjvgyYi/cyber-academy/actions/workflows/deploy.yml/badge.svg)](https://github.com/kjvgyYi/cyber-academy/actions/workflows/deploy.yml)
 
 ---
 
-## Требования
+## О проекте
 
-- **Node.js 20+** (проверено на Node 22).
-- npm (идёт вместе с Node).
+Академия — это статический SPA без бэкенда. Весь учебный контент (уроки, квизы, задачи, справочники) живёт в папке `content/` в виде Markdown и YAML-файлов. Приложение подхватывает их через `import.meta.glob` и рендерит — добавить урок значит положить один `.md`-файл.
 
-## Установка
+**Сейчас доступен Модуль 0** — ориентация и сборка лаборатории (7 уроков + Checkpoint). Ещё 17 модулей есть в структуре и открываются по мере добавления контента.
+
+### Что есть в приложении
+
+- Дерево курса с прогрессом по каждому уроку
+- Интерактивные задачи с подсказками и разбором решений
+- Квизы с объяснениями ответов
+- Матрица навыков, лаборатории, проекты, security-challenges
+- Справочник команд и инструментов
+- Глобальный поиск (`Ctrl+K`)
+- Тёмная тема, адаптивный layout, полная работа на мобильных
+
+---
+
+## Быстрый старт
 
 ```bash
 npm install
+npm run dev       # http://localhost:5173
 ```
-
-## Разработка
-
-```bash
-npm run dev
-```
-
-Откроется локальный сервер (обычно `http://localhost:5173`). Правки в `content/` и `src/` применяются на лету.
 
 ## Все команды
 
 | Команда | Что делает |
 |---|---|
-| `npm run dev` | Запустить dev-сервер с горячей перезагрузкой |
-| `npm run build` | Собрать production-версию в `dist/` (`tsc -b && vite build`) |
-| `npm run preview` | Локально посмотреть собранную версию из `dist/` |
+| `npm run dev` | Dev-сервер с горячей перезагрузкой |
+| `npm run build` | Production-сборка в `dist/` |
+| `npm run build:single` | Одна самодостаточная HTML-страница в `dist-single/` |
+| `npm run preview` | Просмотр собранной версии |
 | `npm run typecheck` | Проверка типов без сборки |
-| `npm run test` | Прогнать тесты (Vitest) |
+| `npm run test` | Vitest-тесты |
+| `npm run test:e2e` | Playwright e2e (мобильный Pixel 7, требует `npm run preview`) |
 | `npm run check` | Полная проверка: типы + тесты + сборка |
 
-## Сборка для production
-
-```bash
-npm run build
-npm run preview   # проверить результат
-```
-
-Готовый сайт окажется в `dist/`. Сборка использует относительные пути (`base: './'`) и `HashRouter`, поэтому `dist/` можно открыть с любого статического хостинга или даже локально — серверные rewrite-правила не нужны.
+**Требования:** Node.js 20+ (проверено на Node 22).
 
 ---
 
-## Структура проекта
+## Структура
 
 ```
 cyber-academy/
-├─ content/                  # ВЕСЬ учебный контент (Markdown + YAML)
-│  ├─ course.yaml            # список фаз и всех 18 модулей
-│  ├─ skills.yaml            # матрица навыков
-│  ├─ projects.yaml          # проекты
-│  ├─ labs.yaml              # лаборатории
-│  ├─ challenges.yaml        # security-задачи
-│  ├─ resources.yaml         # внешние ресурсы
-│  ├─ commands.yaml          # справочник команд
-│  ├─ tools.yaml             # справочник инструментов
-│  ├─ quizzes/               # квизы (quiz-<...>.yaml)
+├─ content/                  # весь учебный контент — меняется чаще всего
+│  ├─ course.yaml            # фазы + список 18 модулей
+│  ├─ skills.yaml / projects.yaml / labs.yaml / challenges.yaml
+│  ├─ commands.yaml / tools.yaml / resources.yaml
+│  ├─ quizzes/               # quiz-*.yaml
 │  └─ modules/
 │     └─ 00-orientation/
-│        ├─ module.md        # описание модуля (frontmatter + текст)
-│        └─ lesson-0-1.md …  # уроки
+│        ├─ module.md
+│        └─ lesson-0-1.md … lesson-0-7-checkpoint.md
 ├─ src/
-│  ├─ content/               # движок: типы, парсер, загрузчик (glob)
+│  ├─ content/               # движок: типы, парсер, glob-загрузчик
 │  ├─ lib/                   # прогресс (localStorage), селекторы, поиск
 │  ├─ components/            # UI, Markdown-рендер, карточки задач/квизов
-│  ├─ pages/                 # страницы (Dashboard, Lesson, Skills, …)
-│  ├─ styles/index.css       # Tailwind v4 + тема (тёмная)
-│  ├─ App.tsx                # маршруты
-│  └─ main.tsx               # точка входа
-├─ index.html
-├─ vite.config.ts            # + плагин, читающий .md/.yaml как строки
-├─ tsconfig.json
+│  ├─ pages/                 # Dashboard, Lesson, Skills, Projects, …
+│  ├─ styles/index.css       # Tailwind v4, тёмная тема
+│  ├─ App.tsx                # маршруты (HashRouter)
+│  └─ main.tsx
+├─ e2e/                      # Playwright mobile-тесты (Pixel 7 390px)
+├─ vite.config.ts
 └─ package.json
 ```
-
-Приложение **только рендерит** структуры из `content/`. Текста уроков в компонентах нет — всё берётся из файлов через `import.meta.glob`.
 
 ---
 
@@ -87,70 +82,57 @@ cyber-academy/
 
 ### Новый урок
 
-1. Создай файл в папке модуля, например `content/modules/00-orientation/lesson-0-2.md`.
-2. Заполни frontmatter и тело:
+Создай файл в папке модуля:
 
 ```markdown
 ---
-id: "0.2"          # уникальный id (используется в URL и прогрессе)
-module: 0          # номер модуля
-order: 2           # порядок внутри модуля
-kind: lesson       # lesson | lab | checkpoint
+id: "0.2"
+module: 0
+order: 2
+kind: lesson          # lesson | lab | checkpoint
 title: Название урока
-estimatedTime: 45  # минут
-difficulty: beginner   # beginner | intermediate | advanced
-skills: [linux]        # id навыков из skills.yaml
-prerequisites: ["0.1"] # id предыдущих уроков (необязательно)
+estimatedTime: 45
+difficulty: beginner  # beginner | intermediate | advanced
+skills: [linux]
+prerequisites: ["0.1"]
 tags: [терминал]
-quizIds: [quiz-0-2]    # необязательно; можно также вставить ```quiz прямо в текст
+quizIds: [quiz-0-2]   # необязательно
 ---
 
-## Обычный markdown
-
-Текст, таблицы, `код`, [ссылки](https://example.com).
+Обычный Markdown. Урок появится в дереве автоматически.
 ```
 
-Урок появится в дереве модуля автоматически.
+### Специальные блоки в уроке
 
-### Специальные блоки внутри урока
-
-Внутри Markdown доступны кастомные блоки:
-
-**Терминал** (не выполняется, строки с `$ ` — команды, остальное — вывод; есть кнопка Copy):
+**Терминал** — кнопка Copy, строки с `$ ` подсвечены как команды:
 
     ```terminal
     $ pwd
     /home/kali
     ```
 
-**Callout** (после языка можно указать свой заголовок):
+**Callout** (`info` / `warning` / `safety` / `tip`):
 
     ```safety Правило безопасности
     Только своя VM и localhost.
     ```
 
-Виды: `info`, `warning`, `safety`, `tip`.
-
-**Практическая задача** (YAML внутри блока → интерактивная карточка с проверкой, подсказками и решением):
+**Задача** — интерактивная карточка с подсказками и разбором:
 
     ```task
     id: task-0-2-example
     title: Название
-    input: true                 # показать поле ввода
-    answers: ["pwd"]            # принимаемые ответы (необязательно)
-    answerPattern: "^pwd$"      # или регулярка (необязательно)
+    input: true
+    answers: ["pwd"]
     prompt: |
-      Текст задания (markdown).
+      Текст задания (Markdown).
     hints:
       - Первая подсказка
-      - Вторая подсказка
     solution: |
       Разбор решения.
     ```
 
-Если `input: false`, задача решается кнопкой «Отметить выполненным». `id` каждой задачи должен быть уникальным по всему курсу.
-
-**Квиз** — указывается id (сам квиз лежит в `content/quizzes/`):
+**Квиз** — вставляется по id:
 
     ```quiz
     quiz-0-2
@@ -158,59 +140,46 @@ quizIds: [quiz-0-2]    # необязательно; можно также вс�
 
 ### Новый квиз
 
-Создай `content/quizzes/quiz-0-2.yaml`:
-
 ```yaml
+# content/quizzes/quiz-0-2.yaml
 id: quiz-0-2
 title: Проверка — тема
-lesson: "0.2"    # id урока (необязательно)
+lesson: "0.2"
 module: 0
 questions:
   - q: Текст вопроса?
     options:
       - Вариант A
-      - Вариант B
-    answer: 1        # индекс правильного варианта (с 0)
+      - "Вариант B: с двоеточием — берём в кавычки"
+    answer: 1
     explanation: Почему верен вариант B.
 ```
 
-> **Важно про YAML:** если значение содержит двоеточие с пробелом (`: `), возьми его в кавычки: `explanation: "Linux: основы"`. Иначе парсер решит, что это вложенный ключ.
+> **YAML и двоеточие:** если значение содержит `: ` — обязательно бери в кавычки, иначе парсер создаст вложенный ключ вместо строки.
 
 ### Новый модуль
 
-1. Добавь модуль в `content/course.yaml` (номер, заголовок, summary, фаза).
-2. Создай папку `content/modules/NN-slug/` и файл `module.md`:
+1. Добавь запись в `content/course.yaml`.
+2. Создай `content/modules/NN-slug/module.md` и уроки в той же папке.
+3. Модуль становится «доступным» автоматически, как только в нём есть хотя бы один урок.
 
-```markdown
----
-number: 1
-objectives:
-  - Что освоит учащийся
-prerequisites:
-  - Что нужно знать заранее
-skills: [linux, networking]
-project: linux-inspector   # id проекта из projects.yaml (необязательно)
 ---
 
-Вводный текст модуля.
+## Деплой
+
+Пуш в `main` → GitHub Actions собирает и публикует на GitHub Pages автоматически.
+
+Для ручного деплоя на любой статический хостинг:
+
+```bash
+npm run build
+# загрузи dist/ на хостинг
 ```
 
-3. Добавь уроки в эту папку. Модуль станет «доступным», как только в нём появится хотя бы один урок.
-
-### Новый проект / лаборатория / challenge
-
-Редактируй `projects.yaml`, `labs.yaml` или `challenges.yaml` — структура полей видна по существующим записям. `challenges.yaml` поддерживает поле `unlockAfter` (id урока) для последовательного открытия.
+HashRouter + `base: './'` — серверные rewrite-правила не нужны.
 
 ---
 
-## Проверка контента
+## Стек
 
-Загрузчик валидирует ссылки при старте (в dev-режиме предупреждения выводятся в консоль браузера, а также на странице **«Прогресс и настройки»**). Он ловит: дубли id, неизвестные ссылки на квизы/навыки/проекты/уроки, выход индекса ответа за пределы вариантов. Держи консоль открытой при добавлении материала.
-
----
-
-## Технологии
-
-React 19 · TypeScript · Vite · Tailwind CSS v4 · react-router · react-markdown · Vitest.
-
-Прогресс хранится в `localStorage` под ключом `cyber-academy:progress:v1`. Экспорт/импорт/сброс — на странице «Прогресс и настройки».
+React 19 · TypeScript (strict) · Vite 8 · Tailwind CSS v4 · React Router v7 · react-markdown · Vitest · Playwright
