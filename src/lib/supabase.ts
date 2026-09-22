@@ -11,7 +11,11 @@ export async function signInWithGoogle() {
     provider: 'google',
     options: {
       redirectTo: 'https://kjvgyyi.github.io/cyber-academy/',
-      ...(googleClientId ? { queryParams: { client_id: googleClientId } } : {}),
+      queryParams: {
+        access_type: 'offline',
+        prompt: 'consent',
+        ...(googleClientId ? { client_id: googleClientId } : {}),
+      },
     },
   });
 }
