@@ -1,4 +1,4 @@
-import { HashRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { HashRouter, Navigate, Route, Routes, useLocation, useParams } from 'react-router-dom';
 import { Layout } from '@/components/Layout';
 import { Dashboard } from '@/pages/Dashboard';
 import { CourseOverview, ModulePage } from '@/pages/Course';
@@ -13,19 +13,26 @@ import { ResourcesPage } from '@/pages/Resources';
 import { SettingsPage } from '@/pages/Settings';
 import { NotFound } from '@/pages/NotFound';
 
+/** Forces LessonPage to remount when the lesson ID changes so useParams() stays fresh. */
+function LessonRoute() {
+  const { id } = useParams();
+  const { pathname } = useLocation();
+  return <LessonPage key={id ?? pathname} />;
+}
+
 /*
  * HashRouter keeps the production build portable: the compiled dist works when
  * opened from any folder or a static host, without server-side rewrite rules.
  */
 export function App() {
   return (
-    <HashRouter>
+    <HashRouter useTransitions={false}>
       <Routes>
         <Route element={<Layout />}>
           <Route index element={<Dashboard />} />
           <Route path="course" element={<CourseOverview />} />
           <Route path="modules/:num" element={<ModulePage />} />
-          <Route path="lessons/:id" element={<LessonPage />} />
+          <Route path="lessons/:id" element={<LessonRoute />} />
           <Route path="skills" element={<SkillsPage />} />
           <Route path="projects" element={<ProjectsPage />} />
           <Route path="projects/:id" element={<ProjectPage />} />

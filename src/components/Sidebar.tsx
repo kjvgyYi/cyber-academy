@@ -74,7 +74,7 @@ function ModuleTree() {
           <div key={m.number}>
             <button
               type="button"
-              onClick={() => hasLessons && toggle(m.number)}
+              onClick={(e) => { if (hasLessons) { e.stopPropagation(); toggle(m.number); } }}
               aria-expanded={hasLessons ? isOpen : undefined}
               className={cx(
                 'group flex w-full items-center gap-2 rounded-lg px-3 py-1.5 text-left text-sm transition-colors',
@@ -95,6 +95,11 @@ function ModuleTree() {
               <span className="flex-1 truncate">
                 <span className="text-faint">M{m.number}</span> {m.title}
               </span>
+              {!hasLessons && (
+                <span className="shrink-0 rounded px-1 py-0.5 text-[0.6rem] font-semibold uppercase tracking-wide bg-raised text-faint">
+                  Скоро
+                </span>
+              )}
             </button>
             {isOpen && hasLessons && (
               <ul className="ml-[1.35rem] border-l border-line pl-1">
