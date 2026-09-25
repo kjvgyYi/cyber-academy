@@ -1,86 +1,109 @@
-title: Python + Kali Linux для Cybersecurity
-subtitle: Личная академия кибербезопасности — с нуля до практики
+title: "Карманный Хакер: Cybersecurity Academy"
+subtitle: "Роадмап от нуля до практикующего специалиста — 18 месяцев"
 
 phases:
   - number: 1
     title: Фундамент
+    months: "1–3"
   - number: 2
-    title: Инструменты и атаки
+    title: Offensive Basics
+    months: "4–6"
   - number: 3
-    title: Автоматизация на Python
+    title: Defensive Basics
+    months: "7–9"
   - number: 4
-    title: Специализация и практика
+    title: Специализация
+    months: "10–12"
+  - number: 5
+    title: Практика и карьера
+    months: "13–18"
 
 modules:
   - number: 0
-    title: Ориентация и лаборатория
-    summary: Что такое cybersecurity, границы закона в Германии, безопасный учебный стенд.
+    title: Введение и setup лабы
+    summary: "Цели курса, границы закона, сборка изолированного учебного стенда на VirtualBox + Kali + Metasploitable."
     phase: 1
   - number: 1
-    title: Основы информационной безопасности
-    summary: CIA, модели угроз, типы атак, роли и жизненный цикл инцидента.
+    title: Компьютерные сети
+    summary: "TCP/IP стек, ARP, DNS, NAT, маршрутизация — глазами защитника и атакующего. Wireshark как основной инструмент анализа."
     phase: 1
   - number: 2
-    title: Linux Fundamentals
-    summary: Файловая система, пользователи, права, процессы, пакеты — база для всего.
+    title: "Операционные системы: Linux"
+    summary: "Файловая система, процессы, пользователи, права, логи — всё что нужно для работы в терминале и понимания атак."
     phase: 1
   - number: 3
-    title: Сети для безопасности
-    summary: TCP/IP, порты, DNS, HTTP, модель OSI глазами защитника и атакующего.
+    title: "Операционные системы: Windows"
+    summary: "Реестр, Active Directory, PowerShell, Event Log — среда в которой работает большинство корпоративных целей."
     phase: 1
   - number: 4
-    title: Bash и командная строка
-    summary: Пайпы, grep/sed/awk, скрипты — быстрый анализ и автоматизация в терминале.
+    title: Криптография
+    summary: "Симметричная и асимметричная криптография, хеши, TLS, PKI — фундамент для понимания любого защитного механизма."
     phase: 1
   - number: 5
-    title: Python с нуля
-    summary: Синтаксис, типы, структуры данных, функции, файлы, обработка ошибок.
+    title: Разведка и сканирование
+    summary: "OSINT-методология, nmap, Nessus/OpenVAS, Google Dorks — сбор информации до первого подключения к цели."
     phase: 2
   - number: 6
-    title: Kali Linux и инструменты
-    summary: Обзор Kali, ключевые инструменты, безопасная работа на стенде.
+    title: Веб-уязвимости
+    summary: "SQLi, XSS, CSRF, IDOR, Path Traversal, SSRF, XXE — OWASP Top 10 с примерами эксплуатации на учебных стендах."
     phase: 2
   - number: 7
-    title: Разведка и сканирование
-    summary: OSINT, Nmap, обнаружение сервисов, снятие баннеров в лаборатории.
+    title: Инструменты атаки
+    summary: "Burp Suite, SQLMap, ffuf, gobuster — профессиональный инструментарий для ручного и автоматизированного тестирования."
     phase: 2
   - number: 8
-    title: Анализ трафика
-    summary: Wireshark и tcpdump, разбор пакетов, обнаружение аномалий.
+    title: Эксплуатация систем
+    summary: "Reverse shells, privilege escalation Linux/Windows, lateral movement — от точки входа до полного контроля."
     phase: 2
   - number: 9
-    title: Web Security основы
-    summary: HTTP-запросы, OWASP Top 10, Burp Suite, уязвимости на Juice Shop.
-    phase: 2
+    title: Hardening систем
+    summary: "CIS Benchmarks, настройка firewall, SSH ключи, SELinux/AppArmor — снижение attack surface на уровне ОС."
+    phase: 3
   - number: 10
-    title: Пароли и хеши
-    summary: Хеширование, John the Ripper, Hashcat, политики паролей — только свои хеши.
-    phase: 2
+    title: Мониторинг и SIEM
+    summary: "ELK Stack, Wazuh, Snort, Suricata — сбор, нормализация и корреляция событий безопасности."
+    phase: 3
   - number: 11
-    title: Python для автоматизации безопасности
-    summary: requests, сокеты, парсинг, работа с API, свои утилиты.
+    title: Incident Response
+    summary: "NIST фазы, forensics, Volatility, Autopsy — методология реагирования на инциденты и цифровая криминалистика."
     phase: 3
   - number: 12
-    title: Анализ логов на Python
-    summary: Парсинг auth.log, поиск атак, отчёты и уведомления.
+    title: Blue Team инструменты
+    summary: "Sysmon, YARA, TheHive, VirusTotal — инструментарий защитника для обнаружения и анализа угроз."
     phase: 3
   - number: 13
-    title: Скрипты для разведки
-    summary: Свой сканер портов, сбор баннеров, автоматизация OSINT.
-    phase: 3
+    title: Reverse Engineering
+    summary: "x86/x64 архитектура, GDB, Ghidra, crackme — дизассемблирование и анализ бинарных файлов."
+    phase: 4
   - number: 14
-    title: Defensive Security и мониторинг
-    summary: Обнаружение, файловый мониторинг, базовая логика SIEM.
-    phase: 3
+    title: Exploit Development
+    summary: "Buffer overflow, shellcode, ROP-цепочки, обход ASLR/DEP — разработка эксплойтов от теории до рабочего PoC."
+    phase: 4
   - number: 15
-    title: Криптография на практике
-    summary: Симметрия/асимметрия, хеши, TLS, библиотека cryptography.
+    title: Malware Analysis
+    summary: "Статический и динамический анализ, PE/ELF форматы, C2-механизмы, песочницы — понимание как работает malware."
     phase: 4
   - number: 16
-    title: Основы пентеста
-    summary: Методология, Metasploit на стенде, отчётность, этика.
+    title: Red Team Operations
+    summary: "MITRE ATT&CK, C2-фреймворки, evasion техники, OPSEC — имитация реального атакующего в рамках авторизованных операций."
     phase: 4
   - number: 17
-    title: Capstone и портфолио
-    summary: Итоговый проект, GitHub-портфолио, план дальнейшего роста.
+    title: Cloud Security
+    summary: "AWS/Azure/GCP IAM, мисконфигурации, S3 buckets, контейнеры — безопасность облачной инфраструктуры."
     phase: 4
+  - number: 18
+    title: "CTF — соревнования"
+    summary: "Jeopardy и Attack-Defense форматы, платформы, стратегии решения заданий, написание write-up'ов."
+    phase: 5
+  - number: 19
+    title: Bug Bounty
+    summary: "HackerOne, Bugcrowd, методология поиска, правила отчётности — монетизация навыков через легальный поиск уязвимостей."
+    phase: 5
+  - number: 20
+    title: Домашняя лаборатория
+    summary: "VirtualBox/Proxmox, Kali, pfSense, Security Onion — полноценный учебный стенд для всех этапов роадмапа."
+    phase: 5
+  - number: 21
+    title: Карьера в кибербезе
+    summary: "Роли и зарплаты, OSCP/CEH/CISSP/CompTIA, резюме и LinkedIn, путь от junior до senior."
+    phase: 5

@@ -18,14 +18,30 @@ import { QuizCard } from './QuizCard';
  * plain Markdown between them to react-markdown.
  */
 
+interface ResourceItem {
+  title?: string;
+  name?: string;
+  author?: string;
+  url?: string;
+  note?: string;
+}
+
+interface ResourceBlockData {
+  books?: ResourceItem[];
+  platforms?: ResourceItem[];
+  tools?: ResourceItem[];
+  videos?: ResourceItem[];
+}
+
 type Segment =
   | { type: 'md'; text: string }
   | { type: 'terminal'; text: string }
   | { type: 'task'; task: Task }
   | { type: 'quiz'; id: string }
-  | { type: 'callout'; kind: CalloutKind; title?: string; body: string };
+  | { type: 'callout'; kind: CalloutKind; title?: string; body: string }
+  | { type: 'resources'; data: ResourceBlockData };
 
-const SPECIAL = /^```(terminal|task|quiz|info|warning|safety|tip)([^\n]*)\n([\s\S]*?)^```[ \t]*$/gm;
+const SPECIAL = /^```(terminal|task|quiz|info|warning|safety|tip|resources)([^\n]*)\n([\s\S]*?)^```[ \t]*$/gm;
 
 function parseSegments(md: string): Segment[] {
   const segments: Segment[] = [];
@@ -47,6 +63,13 @@ function parseSegments(md: string): Segment[] {
       }
     } else if (kind === 'quiz') {
       segments.push({ type: 'quiz', id: inner.trim() });
+    } else if (kind === 'resources') {
+      try {
+        const data = YAML.parse(inner) as ResourceBlockData;
+        segments.push({ type: 'resources', data: data ?? {} });
+      } catch {
+        segments.push({ type: 'md', text: '```\n' + inner + '```' });
+      }
     } else {
       segments.push({
         type: 'callout',
@@ -68,6 +91,63 @@ function extractText(node: ReactNode): string {
     return extractText((node as { props: { children?: ReactNode } }).props.children);
   }
   return '';
+}
+
+function ResourceBlock({ data }: { data: ResourceBlockData }) {
+  const sections: Array<{ key: keyof ResourceBlockData; icon: string; label: string }> = [
+    { key: 'books', icon: '📚', label: 'Книги' },
+    { key: 'platforms', icon: '🖥️', label: 'Платформы' },
+    { key: 'tools', icon: '🔧', label: 'Инструменты' },
+    { key: 'videos', icon: '🎬', label: 'Видео и курсы' },
+  ];
+
+  const nonEmpty = sections.filter(({ key }) => (data[key]?.length ?? 0) > 0);
+  if (nonEmpty.length === 0) return null;
+
+  return (
+    <div className="my-6 rounded-xl border border-line bg-raised/20 p-5">
+      <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-faint">Ресурсы</h3>
+      <div className="grid gap-5 sm:grid-cols-2">
+        {nonEmpty.map(({ key, icon, label }) => {
+          const items = data[key]!;
+          return (
+            <div key={key}>
+              <h4 className="mb-2.5 flex items-center gap-1.5 text-sm font-semibold text-fg">
+                <span aria-hidden="true">{icon}</span> {label}
+              </h4>
+              <ul className="space-y-2">
+                {items.map((item, i) => {
+                  const displayName = item.title ?? item.name ?? '';
+                  return (
+                    <li key={i} className="text-sm leading-snug">
+                      {item.url ? (
+                        <a
+                          href={item.url}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="font-medium text-sky hover:underline"
+                        >
+                          {displayName}
+                        </a>
+                      ) : (
+                        <span className="font-medium text-fg">{displayName}</span>
+                      )}
+                      {item.author && (
+                        <span className="text-muted"> · {item.author}</span>
+                      )}
+                      {item.note && (
+                        <span className="block text-xs text-faint">{item.note}</span>
+                      )}
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
 }
 
 interface BaseMd {
@@ -158,6 +238,8 @@ export function Markdown({ content, compact, inline }: BaseMd) {
                 <PlainMarkdown content={seg.body} />
               </Callout>
             );
+          case 'resources':
+            return <ResourceBlock key={i} data={seg.data} />;
         }
       })}
     </div>

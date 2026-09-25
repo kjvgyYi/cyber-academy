@@ -9,6 +9,7 @@ export type LessonKind = 'lesson' | 'lab' | 'checkpoint';
 export interface Phase {
   number: number;
   title: string;
+  months?: string;
 }
 
 export interface ModuleOutline {

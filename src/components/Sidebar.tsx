@@ -13,6 +13,7 @@ import {
   LayoutDashboard,
   Library,
   ListChecks,
+  Map,
   Search,
   ShieldHalf,
   Wrench,
@@ -24,6 +25,7 @@ import { StatusIcon, cx } from './ui';
 
 const primaryLinks = [
   { to: '/', label: 'Dashboard', icon: LayoutDashboard, end: true },
+  { to: '/roadmap', label: 'Роадмап', icon: Map },
   { to: '/skills', label: 'Skills Matrix', icon: Gauge },
 ];
 
@@ -39,6 +41,14 @@ const referenceLinks = [
   { to: '/reference/tools', label: 'Security Tools', icon: Wrench },
   { to: '/resources', label: 'Ресурсы', icon: Library },
 ];
+
+const phaseColors: Record<number, string> = {
+  1: 'text-blue-400',
+  2: 'text-orange-400',
+  3: 'text-emerald-400',
+  4: 'text-purple-400',
+  5: 'text-amber',
+};
 
 function SectionHeading({ children }: { children: string }) {
   return <p className="px-3 pb-1 pt-4 text-[0.68rem] font-semibold uppercase tracking-wider text-faint">{children}</p>;
@@ -65,75 +75,89 @@ function ModuleTree() {
       return next;
     });
 
+  const phases = course.phases;
+
   return (
     <div className="space-y-0.5">
-      {course.modules.map((m) => {
-        const status = moduleStatus(state, course, m);
-        const isOpen = open.has(m.number);
-        const hasLessons = m.lessons.length > 0;
+      {phases.map((phase) => {
+        const phaseMods = course.modules.filter((m) => m.phase === phase.number);
+        const phaseColor = phaseColors[phase.number] ?? 'text-faint';
         return (
-          <div key={m.number}>
-            <button
-              type="button"
-              onClick={(e) => { if (hasLessons) { e.stopPropagation(); toggle(m.number); } }}
-              aria-expanded={hasLessons ? isOpen : undefined}
-              className={cx(
-                'group flex w-full items-center gap-2 rounded-lg px-3 py-1.5 text-left text-sm transition-colors',
-                activeNum === m.number ? 'text-fg' : 'text-muted hover:text-fg',
-                hasLessons ? 'hover:bg-raised/60' : 'cursor-default opacity-70',
-              )}
-            >
-              <ChevronRight
-                size={14}
-                aria-hidden
-                className={cx(
-                  'shrink-0 text-faint transition-transform',
-                  isOpen && 'rotate-90',
-                  !hasLessons && 'invisible',
-                )}
-              />
-              <StatusIcon status={status} size={14} />
-              <span className="flex-1 truncate">
-                <span className="text-faint">M{m.number}</span> {m.title}
-              </span>
-              {!hasLessons && (
-                <span className="shrink-0 rounded px-1 py-0.5 text-[0.6rem] font-semibold uppercase tracking-wide bg-raised text-faint">
-                  Скоро
-                </span>
-              )}
-            </button>
-            {isOpen && hasLessons && (
-              <ul className="ml-[1.35rem] border-l border-line pl-1">
-                {m.lessons.map((l) => (
-                  <li key={l.id}>
-                    <NavLink
-                      to={`/lessons/${l.id}`}
-                      className={({ isActive }) =>
-                        cx(
-                          'flex items-center gap-2 rounded-md px-2.5 py-1 text-[0.82rem] transition-colors',
-                          isActive ? 'bg-raised text-fg' : 'text-muted hover:bg-raised/50 hover:text-fg',
-                        )
-                      }
-                    >
-                      <StatusIcon
-                        status={
-                          state.lessons[l.id] === 'completed'
-                            ? 'completed'
-                            : state.lessons[l.id]
-                              ? 'in_progress'
-                              : 'not_started'
-                        }
-                        size={12}
-                      />
-                      <span className="truncate">
-                        {l.kind === 'checkpoint' ? 'Checkpoint' : l.kind === 'lab' ? `${l.id} · Lab` : l.id} {l.kind === 'lesson' && l.title}
-                        {l.kind !== 'lesson' && l.kind !== 'checkpoint' ? ` · ${l.title}` : ''}
+          <div key={phase.number}>
+            <p className={cx('px-3 pb-0.5 pt-3 text-[0.65rem] font-bold uppercase tracking-widest', phaseColor)}>
+              {phase.title}
+              {phase.months && <span className="ml-1 font-normal opacity-60">мес. {phase.months}</span>}
+            </p>
+            {phaseMods.map((m) => {
+              const status = moduleStatus(state, course, m);
+              const isOpen = open.has(m.number);
+              const hasLessons = m.lessons.length > 0;
+              return (
+                <div key={m.number}>
+                  <button
+                    type="button"
+                    onClick={(e) => { if (hasLessons) { e.stopPropagation(); toggle(m.number); } }}
+                    aria-expanded={hasLessons ? isOpen : undefined}
+                    className={cx(
+                      'group flex w-full items-center gap-2 rounded-lg px-3 py-1.5 text-left text-sm transition-colors',
+                      activeNum === m.number ? 'text-fg' : 'text-muted hover:text-fg',
+                      hasLessons ? 'hover:bg-raised/60' : 'cursor-default opacity-70',
+                    )}
+                  >
+                    <ChevronRight
+                      size={14}
+                      aria-hidden
+                      className={cx(
+                        'shrink-0 text-faint transition-transform',
+                        isOpen && 'rotate-90',
+                        !hasLessons && 'invisible',
+                      )}
+                    />
+                    <StatusIcon status={status} size={14} />
+                    <span className="flex-1 truncate">
+                      <span className="text-faint">M{m.number}</span> {m.title}
+                    </span>
+                    {!hasLessons && (
+                      <span className="shrink-0 rounded px-1 py-0.5 text-[0.6rem] font-semibold uppercase tracking-wide bg-raised text-faint">
+                        Скоро
                       </span>
-                    </NavLink>
-                  </li>
-                ))}
-              </ul>
-            )}
+                    )}
+                  </button>
+                  {isOpen && hasLessons && (
+                    <ul className="ml-[1.35rem] border-l border-line pl-1">
+                      {m.lessons.map((l) => (
+                        <li key={l.id}>
+                          <NavLink
+                            to={`/lessons/${l.id}`}
+                            className={({ isActive }) =>
+                              cx(
+                                'flex items-center gap-2 rounded-md px-2.5 py-1 text-[0.82rem] transition-colors',
+                                isActive ? 'bg-raised text-fg' : 'text-muted hover:bg-raised/50 hover:text-fg',
+                              )
+                            }
+                          >
+                            <StatusIcon
+                              status={
+                                state.lessons[l.id] === 'completed'
+                                  ? 'completed'
+                                  : state.lessons[l.id]
+                                    ? 'in_progress'
+                                    : 'not_started'
+                              }
+                              size={12}
+                            />
+                            <span className="truncate">
+                              {l.kind === 'checkpoint' ? 'Checkpoint' : l.kind === 'lab' ? `${l.id} · Lab` : l.id} {l.kind === 'lesson' && l.title}
+                              {l.kind !== 'lesson' && l.kind !== 'checkpoint' ? ` · ${l.title}` : ''}
+                            </span>
+                          </NavLink>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              );
+            })}
           </div>
         );
       })}

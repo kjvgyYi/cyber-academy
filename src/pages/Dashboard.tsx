@@ -1,10 +1,60 @@
 import { Link } from 'react-router-dom';
-import { ArrowRight, BookOpenCheck, Bookmark, Flame, FolderGit2, GraduationCap, ListChecks, Timer } from 'lucide-react';
+import { ArrowRight, BookOpenCheck, Bookmark, Flame, FolderGit2, ListChecks, Map, Timer } from 'lucide-react';
 import { course, orderedLessons, lessonById } from '@/content';
 import { useProgress } from '@/lib/progress';
 import { courseCompletion, formatDuration, nextLesson, quizAverage } from '@/lib/selectors';
 import { computeStreak } from '@/lib/progress';
 import { Badge, Button, LevelMeter, Panel, ProgressBar, cx } from '@/components/ui';
+
+const phaseAccents: Record<number, { bar: string; bg: string; text: string }> = {
+  1: { bar: 'bg-blue-500', bg: 'bg-blue-500/10', text: 'text-blue-400' },
+  2: { bar: 'bg-orange-500', bg: 'bg-orange-500/10', text: 'text-orange-400' },
+  3: { bar: 'bg-emerald-500', bg: 'bg-emerald-500/10', text: 'text-emerald-400' },
+  4: { bar: 'bg-purple-500', bg: 'bg-purple-500/10', text: 'text-purple-400' },
+  5: { bar: 'bg-amber', bg: 'bg-amber/10', text: 'text-amber' },
+};
+
+function PhaseCards() {
+  const { state } = useProgress();
+  return (
+    <div className="mt-6">
+      <div className="mb-3 flex items-center justify-between">
+        <h2 className="font-semibold text-[#eef2f7]">Прогресс по этапам</h2>
+        <Link to="/roadmap" className="text-sm text-sky hover:underline">Роадмап →</Link>
+      </div>
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+        {course.phases.map((phase) => {
+          const phaseMods = course.modules.filter((m) => m.phase === phase.number);
+          const totalLessons = phaseMods.reduce((s, m) => s + m.lessons.length, 0);
+          const doneLessons = phaseMods.reduce(
+            (s, m) => s + m.lessons.filter((l) => state.lessons[l.id] === 'completed').length,
+            0,
+          );
+          const pct = totalLessons > 0 ? Math.round((doneLessons / totalLessons) * 100) : 0;
+          const colors = phaseAccents[phase.number] ?? phaseAccents[1];
+          const availableMods = phaseMods.filter((m) => m.available).length;
+
+          return (
+            <Link key={phase.number} to="/roadmap" className={cx('rounded-xl border border-line p-4 hover:border-line-strong transition-colors', colors.bg)}>
+              <div className="mb-1 flex items-baseline justify-between gap-1">
+                <span className={cx('text-xs font-semibold', colors.text)}>Этап {phase.number}</span>
+                <span className="font-mono text-xs text-muted">{pct}%</span>
+              </div>
+              <p className="mb-2 truncate text-sm font-medium text-fg">{phase.title}</p>
+              {phase.months && (
+                <p className="mb-2 text-[0.65rem] text-faint">мес. {phase.months}</p>
+              )}
+              <div className="h-1 w-full rounded-full bg-raised overflow-hidden">
+                <div className={cx('h-full rounded-full', colors.bar)} style={{ width: `${pct}%` }} />
+              </div>
+              <p className="mt-1 text-[0.65rem] text-faint">{availableMods}/{phaseMods.length} модулей открыто</p>
+            </Link>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
 
 function StatCard({ icon: Icon, value, label }: { icon: typeof Timer; value: string | number; label: string }) {
   return (
@@ -156,10 +206,13 @@ export function Dashboard() {
         </div>
       </div>
 
+      {/* Phase progress cards */}
+      <PhaseCards />
+
       {/* Quick links */}
       <div className="mt-6 grid grid-cols-2 gap-3 md:grid-cols-4">
         {[
-          { to: '/course', label: 'Все модули', icon: GraduationCap },
+          { to: '/roadmap', label: 'Роадмап', icon: Map },
           { to: '/labs', label: 'Лаборатории', icon: ListChecks },
           { to: '/reference/tools', label: 'Security Tools', icon: FolderGit2 },
           { to: '/resources', label: 'Ресурсы', icon: BookOpenCheck },

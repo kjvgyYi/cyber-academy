@@ -11,6 +11,7 @@ import { QuizzesPage } from '@/pages/Quizzes';
 import { CommandsPage, ToolsPage } from '@/pages/Reference';
 import { ResourcesPage } from '@/pages/Resources';
 import { SettingsPage } from '@/pages/Settings';
+import { RoadmapPage } from '@/pages/Roadmap';
 import { NotFound } from '@/pages/NotFound';
 
 /** Forces LessonPage to remount when the lesson ID changes so useParams() stays fresh. */
@@ -43,6 +44,7 @@ export function App() {
           <Route path="reference/commands" element={<CommandsPage />} />
           <Route path="reference/tools" element={<ToolsPage />} />
           <Route path="resources" element={<ResourcesPage />} />
+          <Route path="roadmap" element={<RoadmapPage />} />
           <Route path="settings" element={<SettingsPage />} />
           <Route path="404" element={<NotFound />} />
           <Route path="*" element={<Navigate to="/404" replace />} />
